@@ -39,8 +39,14 @@
 ;; .emacs:
 ;;
 ;;     (load "icycleb")
-;;     (global-set-key (kbd "M-h") 'icycleb-next-buffer)
-;;     (global-set-key (kbd "M-H") 'icycleb-previous-buffer)
+;;     (global-set-key [(meta h)]       'icycleb-next-buffer)
+;;     (global-set-key [(meta shift h)] 'icycleb-previous-buffer)
+;;
+;; Another alternative is to use functions keys like F9 and F10:
+;;
+;;     (load "icycleb")
+;;     (global-set-key [f9]  'icycleb-previous-buffer)
+;;     (global-set-key [f10] 'icycleb-next-buffer)
 ;;
 ;; icycleb was inspired by cycle-buffer.el
 ;; <http://kellyfelkins.org/pub/cycle-buffer.el>. cycle-buffer.el has
