@@ -49,13 +49,18 @@
 ;;
 ;; /Joel Rosdahl <joel@rosdahl.net>
 
-(defvar icycleb-current-buffer-index 0)
-(defvar icycleb-saved-buffers nil)
+(defvar icycleb-current-buffer-index 0
+  "Index of the currently displayed buffer in the buffer list.")
+(defvar icycleb-saved-buffers nil
+  "Saved buffer list state; the original order of buffers to the left
+of icycleb-current-buffer-index.")
 
 (defun icycleb-first-n (n list)
+  "Returns the first n elements of a list."
   (butlast list (- (length list) n)))
 
 (defun icycleb-filter (elements pred)
+  "Returns elements that satisfy a predicate."
   (let ((result nil))
     (while elements
       (let ((elem (car elements))
@@ -66,25 +71,35 @@
     (nreverse result)))
 
 (defun icycleb-interesting-buffer-p (name)
+  "Decides whether a buffer name should be included in the displayed
+buffer list."
   (not (eq (string-to-char (buffer-name name)) ?\ )))
 
 (defun icycleb-interesting-buffers ()
+  "Returns buffers that should be included in the displayed buffer
+list."
   (icycleb-filter (buffer-list) 'icycleb-interesting-buffer-p))
 
 (defun icycleb-first-icycleb-buffer-switch-command ()
+  "Determines whether this is the first invocation of
+icycleb-next-buffer or icycleb-previous-buffer this round."
   (not (or (eq last-command 'icycleb-next-buffer)
            (eq last-command 'icycleb-previous-buffer))))
 
 (defun icycleb-restore-buffers ()
+  "Helper function that restores the buffer list to the original state."
   (mapc 'switch-to-buffer (reverse icycleb-saved-buffers)))
 
 (defun icycleb-format-buffer (current-buffer buffer)
+  "Format a buffer name for inclusion in the buffer list in the
+minibuffer."
   (let ((name (buffer-name buffer)))
     (when (eq current-buffer buffer)
       (setq name (format "[%s]" name))
       (add-text-properties 1 (1- (length name)) '(face bold) name))
     name))
 (defun icycleb-format-buffers (current-buffer buffers)
+  "Format buffer names for displaying them in the minibuffer."
   (truncate-string-to-width
    (mapconcat
     (lambda (buffer)
@@ -94,6 +109,7 @@
    (1- (window-width (minibuffer-window)))))
 
 (defun icycleb-select-buffer (index)
+  "Helper function that shows the buffer with a given index."
   (icycleb-restore-buffers)
   (setq icycleb-saved-buffers nil)
   (let* ((buffers (icycleb-interesting-buffers))
