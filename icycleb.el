@@ -53,32 +53,30 @@
 (defvar icycleb-saved-buffers nil)
 
 (defun icycleb-first-n (n list)
-  (if (= n 0)
-      nil
-    (cons (car list) (icycleb-first-n (1- n) (cdr list)))))
+  (butlast list (- (length list) n)))
 
-(defun icycleb-filter (elements fn)
-  (if (null elements)
-      nil
-    (if (apply fn (list (car elements)))
-        (cons (car elements)
-              (icycleb-filter (cdr elements) fn))
-      (icycleb-filter (cdr elements) fn))))
+(defun icycleb-filter (elements pred)
+  (let ((result nil))
+    (while elements
+      (let ((elem (car elements))
+            (rest (cdr elements)))
+        (when (funcall pred elem)
+          (setq result (cons elem result)))
+        (setq elements rest)))
+    (nreverse result)))
 
-(defun icycleb-interesting-buffer-p (buffer)
-  (not (eq (string-to-char (buffer-name buffer)) ?\ )))
+(defun icycleb-interesting-buffer-p (name)
+  (not (eq (string-to-char (buffer-name name)) ?\ )))
 
 (defun icycleb-interesting-buffers ()
   (icycleb-filter (buffer-list) 'icycleb-interesting-buffer-p))
 
-(defun icycleb-first-buffer-command ()
+(defun icycleb-first-icycleb-buffer-switch-command ()
   (not (or (eq last-command 'icycleb-next-buffer)
            (eq last-command 'icycleb-previous-buffer))))
 
-(defun icycleb-restore-buffers (buffers)
-  (when buffers
-    (icycleb-restore-buffers (cdr buffers))
-    (switch-to-buffer (car buffers))))
+(defun icycleb-restore-buffers ()
+  (mapc 'switch-to-buffer (reverse icycleb-saved-buffers)))
 
 (defun icycleb-format-buffer (current-buffer buffer)
   (let ((name (buffer-name buffer)))
@@ -96,7 +94,7 @@
    (1- (window-width (minibuffer-window)))))
 
 (defun icycleb-select-buffer (index)
-  (icycleb-restore-buffers icycleb-saved-buffers)
+  (icycleb-restore-buffers)
   (setq icycleb-saved-buffers nil)
   (let* ((buffers (icycleb-interesting-buffers))
          (current-buffer (nth index buffers)))
@@ -109,7 +107,7 @@
   "Switch to the next buffer in the buffer list. Consecutive invocations
 switches to less recent buffers in the buffer list."
   (interactive)
-  (when (icycleb-first-buffer-command)
+  (when (icycleb-first-icycleb-buffer-switch-command)
     (setq icycleb-current-buffer-index 0)
     (setq icycleb-saved-buffers nil))
   (if (= icycleb-current-buffer-index
@@ -122,7 +120,7 @@ switches to less recent buffers in the buffer list."
   "Switch to the previous buffer in the buffer list. Consecutive invocations
 switches to more recent buffers in the buffer list."
   (interactive)
-  (when (icycleb-first-buffer-command)
+  (when (icycleb-first-icycleb-buffer-switch-command)
     (setq icycleb-current-buffer-index 0)
     (setq icycleb-saved-buffers nil))
   (if (= icycleb-current-buffer-index 0)
