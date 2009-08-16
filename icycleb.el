@@ -1,4 +1,4 @@
-;;; icycleb --- cycle between recently visited buffers
+;;; icycleb --- interactively cycle between recently visited buffers
 
 ;; Copyright (C) 2007-2009 Joel Rosdahl
 ;;
@@ -52,6 +52,13 @@
 ;; <http://kellyfelkins.org/pub/cycle-buffer.el>. cycle-buffer.el has
 ;; some more features, but doesn't quite behave like I want, so I
 ;; wrote my own simple replacement.
+;;
+;; Other alternatives that I have tried but didn't like include:
+;;
+;; * iswitchb-mode
+;; * ido-mode
+;; * icicles
+;; * buffer-stack.el
 ;;
 ;; /Joel Rosdahl <joel@rosdahl.net>
 
