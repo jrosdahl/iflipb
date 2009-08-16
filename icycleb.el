@@ -39,8 +39,8 @@
 ;; .emacs:
 ;;
 ;;     (load "icycleb")
-;;     (global-set-key [(meta h)]       'icycleb-next-buffer)
-;;     (global-set-key [(meta shift h)] 'icycleb-previous-buffer)
+;;     (global-set-key [(meta h)] 'icycleb-next-buffer)
+;;     (global-set-key [(meta H)] 'icycleb-previous-buffer)
 ;;
 ;; Another alternative is to use functions keys like F9 and F10:
 ;;
