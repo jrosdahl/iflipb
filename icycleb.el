@@ -53,12 +53,12 @@
 ;; some more features, but doesn't quite behave like I want, so I
 ;; wrote my own simple replacement.
 ;;
-;; Other alternatives that I have tried but didn't like include:
+;; Other alternatives to icycleb include:
 ;;
-;; * iswitchb-mode
-;; * ido-mode
-;; * icicles
-;; * buffer-stack
+;;   * iswitchb-mode
+;;   * ido-mode
+;;   * icicles
+;;   * buffer-stack
 ;;
 ;; /Joel Rosdahl <joel@rosdahl.net>
 
