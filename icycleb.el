@@ -50,15 +50,15 @@
 ;;
 ;; Another alternative is to use C-tab and C-S-tab:
 ;;
+;;     (global-set-key (kbd "<C-tab>") 'icycleb-next-buffer)
 ;;     (if (featurep 'xemacs)
 ;;         (global-set-key (kbd "<C-iso-left-tab>") 'icycleb-previous-buffer)
 ;;       (global-set-key (kbd "<C-S-iso-lefttab>") 'icycleb-previous-buffer))
-;;     (global-set-key (kbd "<C-tab>") 'icycleb-next-buffer)
 ;;
 ;; Or perhaps use functions keys like F9 and F10:
 ;;
-;;     (global-set-key (kbd "<f9>")  'icycleb-previous-buffer)
 ;;     (global-set-key (kbd "<f10>") 'icycleb-next-buffer)
+;;     (global-set-key (kbd "<f9>")  'icycleb-previous-buffer)
 ;;
 ;; icycleb was inspired by cycle-buffer.el
 ;; <http://kellyfelkins.org/pub/cycle-buffer.el>. cycle-buffer.el has
