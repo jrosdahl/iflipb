@@ -32,19 +32,31 @@
 ;; icycleb-previous-buffer behaves like Alt-Shift-TAB: it walks
 ;; backwards in the buffer list.
 ;;
-;; This file does not install any key bindings for the two commands. I
-;; personally use M-h and M-H (i.e., M-S-h) since I don't use the
-;; standard binding of M-h (mark-paragraph). To install icycleb with
-;; M-h and M-H as keyboard bindings, put something like this in your
-;; .emacs:
+;; To load icycleb, store icycleb.el in your Emacs library path and
+;; put
 ;;
 ;;     (load "icycleb")
+;;
+;; in your .emacs.
+;;
+;; This file does not install any key bindings for the two commands. I
+;; personally use M-h and M-H (i.e., M-S-h) since I don't use the
+;; standard binding of M-h (mark-paragraph) and M-h is quick to press.
+;; To install icycleb with M-h and M-H as keyboard bindings, put
+;; something like this in your .emacs:
+;;
 ;;     (global-set-key (kbd "M-h") 'icycleb-next-buffer)
 ;;     (global-set-key (kbd "M-H") 'icycleb-previous-buffer)
 ;;
-;; Another alternative is to use functions keys like F9 and F10:
+;; Another alternative is to use C-tab and C-S-tab:
 ;;
-;;     (load "icycleb")
+;;     (if (featurep 'xemacs)
+;;         (global-set-key (kbd "<C-iso-left-tab>") 'icycleb-previous-buffer)
+;;       (global-set-key (kbd "<C-S-iso-lefttab>") 'icycleb-previous-buffer))
+;;     (global-set-key (kbd "<C-tab>") 'icycleb-next-buffer)
+;;
+;; Or perhaps use functions keys like F9 and F10:
+;;
 ;;     (global-set-key (kbd "<f9>")  'icycleb-previous-buffer)
 ;;     (global-set-key (kbd "<f10>") 'icycleb-next-buffer)
 ;;
