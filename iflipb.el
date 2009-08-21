@@ -161,8 +161,8 @@ minibuffer."
     (switch-to-buffer current-buffer)))
 
 (defun iflipb-next-buffer ()
-  "Switch to the next buffer in the buffer list. Consecutive invocations
-switches to less recent buffers in the buffer list."
+  "Flip to the next buffer in the buffer list. Consecutive invocations
+switch to less recent buffers in the buffer list."
   (interactive)
   (when (iflipb-first-iflipb-buffer-switch-command)
     (setq iflipb-current-buffer-index 0)
@@ -174,8 +174,8 @@ switches to less recent buffers in the buffer list."
   (setq last-command 'iflipb-next-buffer))
 
 (defun iflipb-previous-buffer ()
-  "Switch to the previous buffer in the buffer list. Consecutive invocations
-switches to more recent buffers in the buffer list."
+  "Flip to the previous buffer in the buffer list. Consecutive
+invocations switch to more recent buffers in the buffer list."
   (interactive)
   (when (iflipb-first-iflipb-buffer-switch-command)
     (setq iflipb-current-buffer-index 0)
