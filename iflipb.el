@@ -36,7 +36,7 @@
 ;; iflipb-previous-buffer behaves like Alt-Shift-TAB: it walks
 ;; backwards in the buffer list.
 ;;
-;; To load iflipb, store iflipb.el in your Emacs library path and put
+;; To load iflipb, store iflipb.el in your Emacs load path and put
 ;;
 ;;   (require 'iflipb)
 ;;
@@ -62,6 +62,10 @@
 ;;
 ;;   (global-set-key (kbd "<f10>") 'iflipb-next-buffer)
 ;;   (global-set-key (kbd "<f9>")  'iflipb-previous-buffer)
+;;
+;; iflipb by default ignores buffers starting with an asterix or
+;; space. See the documentation of the variable
+;; iflipb-boring-buffer-filter for how to change this.
 ;;
 ;; iflipb was inspired by cycle-buffer.el
 ;; <http://kellyfelkins.org/pub/cycle-buffer.el>. cycle-buffer.el has
