@@ -168,3 +168,5 @@ switches to more recent buffers in the buffer list."
       (message "You are already looking at the top buffer.")
     (icycleb-select-buffer (1- icycleb-current-buffer-index)))
   (setq last-command 'icycleb-previous-buffer))
+
+(provide 'icycleb)
