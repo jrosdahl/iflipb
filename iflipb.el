@@ -80,6 +80,12 @@
 ;; /Joel Rosdahl <joel@rosdahl.net>
 ;;
 
+(defvar iflipb-boring-buffer-filter "^\\( \\|\\*\\)"
+  "*This variable may be either a regexp or a function. If it's a
+regexp, it describes buffer names to exclude from the buffer list. If
+it's a function, the function will get a buffer name as an argument. A
+return value of nil from the function means include and non-nil means
+exclude.")
 (defvar iflipb-current-buffer-index 0
   "Index of the currently displayed buffer in the buffer list.")
 (defvar iflipb-saved-buffers nil
@@ -101,10 +107,14 @@ of iflipb-current-buffer-index.")
         (setq elements rest)))
     (nreverse result)))
 
-(defun iflipb-interesting-buffer-p (name)
+(defun iflipb-interesting-buffer-p (buffer)
   "Decides whether a buffer name should be included in the displayed
 buffer list."
-  (not (eq (string-to-char (buffer-name name)) ?\ )))
+  (not
+   (let ((name (buffer-name buffer)))
+     (if (functionp iflipb-boring-buffer-filter)
+         (funcall iflipb-boring-buffer-filter name)
+       (string-match iflipb-boring-buffer-filter name)))))
 
 (defun iflipb-interesting-buffers ()
   "Returns buffers that should be included in the displayed buffer
