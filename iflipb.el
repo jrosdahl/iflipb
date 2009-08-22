@@ -143,6 +143,7 @@ minibuffer."
       (setq name (format "[%s]" name))
       (add-text-properties 1 (1- (length name)) '(face bold) name))
     name))
+
 (defun iflipb-format-buffers (current-buffer buffers)
   "Format buffer names for displaying them in the minibuffer."
   (truncate-string-to-width
