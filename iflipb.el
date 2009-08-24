@@ -172,11 +172,13 @@ switch to less recent buffers in the buffer list."
   (when (iflipb-first-iflipb-buffer-switch-command)
     (setq iflipb-current-buffer-index 0)
     (setq iflipb-saved-buffers nil))
-  (if (= iflipb-current-buffer-index
-         (1- (length (iflipb-interesting-buffers))))
-      (message "No more buffers.")
-    (iflipb-select-buffer (1+ iflipb-current-buffer-index)))
-  (setq last-command 'iflipb-next-buffer))
+  (let ((buffers (iflipb-interesting-buffers)))
+    (if (or (null buffers)
+            (= iflipb-current-buffer-index
+               (1- (length buffers))))
+        (message "No more buffers.")
+      (iflipb-select-buffer (1+ iflipb-current-buffer-index)))
+    (setq last-command 'iflipb-next-buffer)))
 
 (defun iflipb-previous-buffer ()
   "Flip to the previous buffer in the buffer list. Consecutive
