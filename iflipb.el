@@ -17,36 +17,59 @@
 ;; ============================================================================
 ;;
 ;; iflipb lets you flip between recently visited buffers in a way that
-;; resembles what Alt-(Shift-)TAB does in Microsoft Windows and other
-;; graphical window managers. However, iflipb by design doesn't treat
-;; the buffer list as a ring; when you have flipped to the last buffer
-;; and continue, you don't get to the first buffer again.
+;; resembles what Alt-(Shift-)TAB does in Microsoft Windows and other graphical
+;; window managers. iflipb treats the buffer list as a stack, and (by design)
+;; it doesn't loop around. This means that when you have flipped to the last
+;; buffer and continue, you don't get to the first buffer again. This is a good
+;; thing.
 ;;
-;; iflipb provides two commands: iflipb-next-buffer and
-;; iflipb-previous-buffer.
+;; iflipb provides two commands: iflipb-next-buffer and iflipb-previous-buffer.
 ;;
-;; iflipb-next-buffer behaves like Alt-TAB: it switches to the
-;; previously used buffer, just like "C-x b RET" (or C-M-l in XEmacs).
-;; Another consecutive call to iflipb-next-buffer switches to the next
-;; buffer in the buffer list, and so on. While flipping, the names of
-;; the most recent buffers are displayed in the minibuffer, and the
-;; currently visited buffer is surrounded by square brackets and
-;; marked with a bold face and.
+;; iflipb-next-buffer behaves like Alt-TAB: it switches to the previously used
+;; buffer, just like "C-x b RET" (or C-M-l in XEmacs). However, another
+;; consecutive call to iflipb-next-buffer switches to the next buffer in the
+;; buffer list, and so on. When such a consecutive call is made, the
+;; skipped-over buffer is not regarded as visited.
 ;;
-;; iflipb-previous-buffer behaves like Alt-Shift-TAB: it walks
-;; backwards in the buffer list.
+;; While flipping, the names of the most recent buffers are displayed in the
+;; minibuffer, and the currently visited buffer is surrounded by square
+;; brackets and marked with a bold face.
+;;
+;; iflipb-previous-buffer behaves like Alt-Shift-TAB: it walks backwards in the
+;; buffer list.
+;;
+;; Here is an illustration of what happens in a couple of different scenarios:
+;;
+;;                    Minibuffer    Actual
+;;                    display       buffer list
+;; --------------------------------------------
+;; Original:                        A B C D E
+;; Forward flip:      A [B] C D E   B A C D E
+;; Forward flip:      A B [C] D E   C A B D E
+;; Forward flip:      A B C [D] E   D A B C E
+;;
+;; Original:                        A B C D E
+;; Forward flip:      A [B] C D E   B A C D E
+;; Forward flip:      A B [C] D E   C A B D E
+;; Backward flip:     A [B] C D E   B A C D E
+;;
+;; Original:                        A B C D E
+;; Forward flip:      A [B] C D E   B A C D E
+;; Forward flip:      A B [C] D E   C A B D E
+;; [Edit buffer C]:                 C A B D E
+;; Forward flip:      C [A] B D E   A C B D E
 ;;
 ;; To load iflipb, store iflipb.el in your Emacs load path and put
 ;;
 ;;   (require 'iflipb)
 ;;
-;; in your .emacs or equivalent.
+;; in your .emacs file or equivalent.
 ;;
 ;; This file does not install any key bindings for the two commands. I
-;; personally use M-h and M-H (i.e., M-S-h) since I don't use the
-;; standard binding of M-h (mark-paragraph) and M-h is quick and easy
-;; to press. To install iflipb with M-h and M-H as keyboard bindings,
-;; put something like this in your .emacs:
+;; personally use M-h and M-H (i.e., M-S-h) since I don't use the standard
+;; binding of M-h (mark-paragraph) and M-h is quick and easy to press. To
+;; install iflipb with M-h and M-H as keyboard bindings, put something like
+;; this in your .emacs:
 ;;
 ;;   (global-set-key (kbd "M-h") 'iflipb-next-buffer)
 ;;   (global-set-key (kbd "M-H") 'iflipb-previous-buffer)
@@ -63,14 +86,14 @@
 ;;   (global-set-key (kbd "<f10>") 'iflipb-next-buffer)
 ;;   (global-set-key (kbd "<f9>")  'iflipb-previous-buffer)
 ;;
-;; iflipb by default ignores buffers starting with an asterix or
-;; space. See the documentation of the variable
-;; iflipb-boring-buffer-filter for how to change this.
+;; iflipb by default ignores buffers starting with an asterix or space. See the
+;; documentation of the variable iflipb-boring-buffer-filter for how to change
+;; this.
 ;;
 ;; iflipb was inspired by cycle-buffer.el
-;; <http://kellyfelkins.org/pub/cycle-buffer.el>. cycle-buffer.el has
-;; some more features, but doesn't quite behave like I want, so I
-;; wrote my own simple replacement.
+;; <http://kellyfelkins.org/pub/cycle-buffer.el>. cycle-buffer.el has some more
+;; features, but doesn't quite behave like I want, so I wrote my own simple
+;; replacement.
 ;;
 ;; Other alternatives to iflipb include:
 ;;
@@ -86,10 +109,10 @@
 
 (defvar iflipb-boring-buffer-filter "^\\( \\|\\*\\)"
   "*This variable may be either a regexp or a function. If it's a
-regexp, it describes buffer names to exclude from the buffer list. If
-it's a function, the function will get a buffer name as an argument. A
-return value of nil from the function means include and non-nil means
-exclude.")
+regexp, it describes buffer names to exclude from the buffer
+list. If it's a function, the function will get a buffer name as
+an argument. A return value of nil from the function means
+include and non-nil means exclude.")
 (defvar iflipb-current-buffer-index 0
   "Index of the currently displayed buffer in the buffer list.")
 (defvar iflipb-saved-buffers nil
@@ -112,8 +135,8 @@ of iflipb-current-buffer-index.")
     (nreverse result)))
 
 (defun iflipb-interesting-buffer-p (buffer)
-  "Decides whether a buffer name should be included in the displayed
-buffer list."
+  "Decides whether a buffer name should be included in the
+displayed buffer list."
   (not
    (let ((name (buffer-name buffer)))
      (if (functionp iflipb-boring-buffer-filter)
@@ -121,8 +144,8 @@ buffer list."
        (string-match iflipb-boring-buffer-filter name)))))
 
 (defun iflipb-interesting-buffers ()
-  "Returns buffers that should be included in the displayed buffer
-list."
+  "Returns buffers that should be included in the displayed
+buffer list."
   (iflipb-filter (buffer-list) 'iflipb-interesting-buffer-p))
 
 (defun iflipb-first-iflipb-buffer-switch-command ()
@@ -166,8 +189,8 @@ minibuffer."
     (switch-to-buffer current-buffer)))
 
 (defun iflipb-next-buffer ()
-  "Flip to the next buffer in the buffer list. Consecutive invocations
-switch to less recent buffers in the buffer list."
+  "Flip to the next buffer in the buffer list. Consecutive
+invocations switch to less recent buffers in the buffer list."
   (interactive)
   (when (iflipb-first-iflipb-buffer-switch-command)
     (setq iflipb-current-buffer-index 0)
