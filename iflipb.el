@@ -108,7 +108,7 @@
 ;; /Joel Rosdahl <joel@rosdahl.net>
 ;;
 
-(defvar iflipb-boring-buffer-filter "^\\( \\|\\*\\)"
+(defvar iflipb-boring-buffer-filter "^[ *]"
   "*This variable may be either a regexp or a function. If it's a
 regexp, it describes buffer names to exclude from the buffer
 list. If it's a function, the function will get a buffer name as
