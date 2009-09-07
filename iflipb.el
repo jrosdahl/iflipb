@@ -23,6 +23,10 @@
 ;; buffer and continue, you don't get to the first buffer again. This is a good
 ;; thing.
 ;;
+;;
+;; OPERATION
+;; =========
+;;
 ;; iflipb provides two commands: iflipb-next-buffer and iflipb-previous-buffer.
 ;;
 ;; iflipb-next-buffer behaves like Alt-TAB: it switches to the previously used
@@ -34,6 +38,11 @@
 ;; While flipping, the names of the most recent buffers are displayed in the
 ;; minibuffer, and the currently visited buffer is surrounded by square
 ;; brackets and marked with a bold face.
+;;
+;; A key thing to notice here is that iflipb displays the buffer contents after
+;; each step forward/backwards (in addition to displaying the buffer names),
+;; unlike for instance the buffer switching model of ido-mode where only the
+;; buffer names are displayed.
 ;;
 ;; iflipb-previous-buffer behaves like Alt-Shift-TAB: it walks backwards in the
 ;; buffer list.
@@ -58,6 +67,16 @@
 ;; Forward flip:      A B [C] D E   C A B D E
 ;; [Edit buffer C]:                 C A B D E
 ;; Forward flip:      C [A] B D E   A C B D E
+;;
+;; iflipb by default ignores buffers whose names start with an asterix or
+;; space. You can give a prefix argument to iflipb-next-buffer to make it flip
+;; between more buffers. See the documentation of the variables
+;; iflipb-ignore-buffers and iflipb-always-ignore-buffers for how to change
+;; this.
+;;
+;;
+;; INSTALLATION
+;; ============
 ;;
 ;; To load iflipb, store iflipb.el in your Emacs load path and put
 ;;
@@ -86,22 +105,14 @@
 ;;   (global-set-key (kbd "<f10>") 'iflipb-next-buffer)
 ;;   (global-set-key (kbd "<f9>")  'iflipb-previous-buffer)
 ;;
-;; iflipb by default ignores buffers starting with an asterix or space. You can
-;; give a prefix argument to iflipb-next-buffer to make it flip between more
-;; buffers. See the documentation of the variables iflipb-ignore-buffers and
-;; iflipb-always-ignore-buffers for how to change this.
+;;
+;; ABOUT
+;; =====
 ;;
 ;; iflipb was inspired by cycle-buffer.el
 ;; <http://kellyfelkins.org/pub/cycle-buffer.el>. cycle-buffer.el has some more
 ;; features, but doesn't quite behave like I want, so I wrote my own simple
 ;; replacement.
-;;
-;; Other alternatives and complements to iflipb include:
-;;
-;;   * iswitchb-mode
-;;   * ido-mode
-;;   * icicles
-;;   * buffer-stack
 ;;
 ;; Have fun!
 ;;
