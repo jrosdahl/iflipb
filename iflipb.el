@@ -229,8 +229,11 @@ are also ignored."
   (interactive "P")
   (when (iflipb-first-iflipb-buffer-switch-command)
     (setq iflipb-current-buffer-index 0)
-    (setq iflipb-saved-buffers nil)
-    (setq iflipb-include-more-buffers arg))
+    (setq iflipb-saved-buffers nil))
+  (if arg
+      (setq iflipb-include-more-buffers t)
+    (if (iflipb-first-iflipb-buffer-switch-command)
+      (setq iflipb-include-more-buffers nil)))
   (let ((buffers (iflipb-interesting-buffers)))
     (if (or (null buffers)
             (= iflipb-current-buffer-index
