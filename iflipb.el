@@ -88,8 +88,8 @@
 ;;
 ;; iflipb by default ignores buffers starting with an asterix or space. You can
 ;; give a prefix argument to iflipb-next-buffer to make it flip between more
-;; buffers. See the documentation of the variables iflipb-boring-buffer-filter
-;; and iflipb-really-boring-buffer-filter for how to change this.
+;; buffers. See the documentation of the variables iflipb-ignore-buffers and
+;; iflipb-always-ignore-buffers for how to change this.
 ;;
 ;; iflipb was inspired by cycle-buffer.el
 ;; <http://kellyfelkins.org/pub/cycle-buffer.el>. cycle-buffer.el has some more
@@ -108,7 +108,7 @@
 ;; /Joel Rosdahl <joel@rosdahl.net>
 ;;
 
-(defvar iflipb-boring-buffer-filter "^[*]"
+(defvar iflipb-ignore-buffers "^[*]"
   "*This variable determines which buffers to ignore when a
 prefix argument has not been given to iflipb-next-buffer. The
 value may be either a regexp string, a function or a list. If the
@@ -118,7 +118,7 @@ will get a buffer name as an argument (a return value of nil from
 the function means include and non-nil means exclude). If the
 value is a list, the filter matches if any of the elements in the
 value match.")
-(defvar iflipb-really-boring-buffer-filter "^ "
+(defvar iflipb-always-ignore-buffers "^ "
   "*This variable determines which buffers to always ignore. The
 value may be either a regexp string, a function or a list. If the
 value is a regexp string, it describes buffer names to exclude
@@ -175,10 +175,10 @@ of iflipb-current-buffer-index.")
 buffer list."
   (iflipb-buffers-not-matching-filter
    (append
-    (list iflipb-really-boring-buffer-filter)
+    (list iflipb-always-ignore-buffers)
     (if iflipb-include-more-buffers
         nil
-      (list iflipb-boring-buffer-filter)))))
+      (list iflipb-ignore-buffers)))))
 
 (defun iflipb-first-iflipb-buffer-switch-command ()
   "Determines whether this is the first invocation of
@@ -223,9 +223,9 @@ minibuffer."
 (defun iflipb-next-buffer (arg)
   "Flip to the next buffer in the buffer list. Consecutive
 invocations switch to less recent buffers in the buffer list.
-Buffers matching iflipb-really-boring-buffer-filter are always
-ignored. Without a prefix argument, buffers matching
-iflipb-boring-buffer-filter are also ignored."
+Buffers matching iflipb-always-ignore-buffers are always ignored.
+Without a prefix argument, buffers matching iflipb-ignore-buffers
+are also ignored."
   (interactive "P")
   (when (iflipb-first-iflipb-buffer-switch-command)
     (setq iflipb-current-buffer-index 0)
