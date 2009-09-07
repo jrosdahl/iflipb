@@ -86,17 +86,17 @@
 ;;   (global-set-key (kbd "<f10>") 'iflipb-next-buffer)
 ;;   (global-set-key (kbd "<f9>")  'iflipb-previous-buffer)
 ;;
-;; iflipb by default ignores buffers starting with an asterix or space. See the
-;; documentation of the variable iflipb-boring-buffer-filter for how to change
-;; this. You can also give a prefix argument to iflipb-next-buffer to flip
-;; between all buffers in the buffer list.
+;; iflipb by default ignores buffers starting with an asterix or space. You can
+;; give a prefix argument to iflipb-next-buffer to make it flip between more
+;; buffers. See the documentation of the variables iflipb-boring-buffer-filter
+;; and iflipb-really-boring-buffer-filter for how to change this.
 ;;
 ;; iflipb was inspired by cycle-buffer.el
 ;; <http://kellyfelkins.org/pub/cycle-buffer.el>. cycle-buffer.el has some more
 ;; features, but doesn't quite behave like I want, so I wrote my own simple
 ;; replacement.
 ;;
-;; Other alternatives to iflipb include:
+;; Other alternatives and complements to iflipb include:
 ;;
 ;;   * iswitchb-mode
 ;;   * ido-mode
@@ -108,15 +108,28 @@
 ;; /Joel Rosdahl <joel@rosdahl.net>
 ;;
 
-(defvar iflipb-boring-buffer-filter "^[ *]"
-  "*This variable may be either a regexp or a function. If it's a
-regexp, it describes buffer names to exclude from the buffer
-list. If it's a function, the function will get a buffer name as
-an argument. A return value of nil from the function means
-include and non-nil means exclude.")
+(defvar iflipb-boring-buffer-filter "^[*]"
+  "*This variable determines which buffers to ignore when a
+prefix argument has not been given to iflipb-next-buffer. The
+value may be either a regexp string, a function or a list. If the
+value is a regexp string, it describes buffer names to exclude
+from the buffer list. If the value is a function, the function
+will get a buffer name as an argument (a return value of nil from
+the function means include and non-nil means exclude). If the
+value is a list, the filter matches if any of the elements in the
+value match.")
+(defvar iflipb-really-boring-buffer-filter "^ "
+  "*This variable determines which buffers to always ignore. The
+value may be either a regexp string, a function or a list. If the
+value is a regexp string, it describes buffer names to exclude
+from the buffer list. If the value is a function, the function
+will get a buffer name as an argument (a return value of nil from
+the function means include and non-nil means exclude). If the
+value is a list, the filter matches if any of the elements in the
+value match.")
 (defvar iflipb-current-buffer-index 0
   "Index of the currently displayed buffer in the buffer list.")
-(defvar iflipb-include-all-buffers nil
+(defvar iflipb-include-more-buffers nil
   "Whether all buffers should be included while flipping.")
 (defvar iflipb-saved-buffers nil
   "Saved buffer list state; the original order of buffers to the left
@@ -126,7 +139,7 @@ of iflipb-current-buffer-index.")
   "Returns the first n elements of a list."
   (butlast list (- (length list) n)))
 
-(defun iflipb-filter (elements pred)
+(defun iflipb-filter (pred elements)
   "Returns elements that satisfy a predicate."
   (let ((result nil))
     (while elements
@@ -137,21 +150,35 @@ of iflipb-current-buffer-index.")
         (setq elements rest)))
     (nreverse result)))
 
-(defun iflipb-interesting-buffer-p (buffer)
-  "Decides whether a buffer name should be included in the
-displayed buffer list."
-  (not
-   (let ((name (buffer-name buffer)))
-     (if (functionp iflipb-boring-buffer-filter)
-         (funcall iflipb-boring-buffer-filter name)
-       (string-match iflipb-boring-buffer-filter name)))))
+(defun iflipb-any (elements)
+  "Returns non-nil if and only if any element in the list is non-nil."
+  (iflipb-filter (lambda (x) (not (null x))) elements))
+
+(defun iflipb-match-filter (string filter)
+  "Returns non-nil if string matches filter, otherwise nil."
+  (cond ((null filter) nil)
+        ((functionp filter) (funcall filter string))
+        ((listp filter)
+         (iflipb-any (mapcar (lambda (f) (iflipb-match-filter string f))
+                             filter)))
+        ((stringp filter) (string-match filter string))
+        (t (error (format "could not parse filter %s" filter)))))
+
+(defun iflipb-buffers-not-matching-filter (filter)
+  "Returns a list of buffer names not matching a filter."
+  (iflipb-filter
+   (lambda (b) (not (iflipb-match-filter (buffer-name b) filter)))
+   (buffer-list)))
 
 (defun iflipb-interesting-buffers ()
   "Returns buffers that should be included in the displayed
 buffer list."
-  (if iflipb-include-all-buffers
-      (buffer-list)
-    (iflipb-filter (buffer-list) 'iflipb-interesting-buffer-p)))
+  (iflipb-buffers-not-matching-filter
+   (append
+    (list iflipb-really-boring-buffer-filter)
+    (if iflipb-include-more-buffers
+        nil
+      (list iflipb-boring-buffer-filter)))))
 
 (defun iflipb-first-iflipb-buffer-switch-command ()
   "Determines whether this is the first invocation of
@@ -196,13 +223,14 @@ minibuffer."
 (defun iflipb-next-buffer (arg)
   "Flip to the next buffer in the buffer list. Consecutive
 invocations switch to less recent buffers in the buffer list.
-With a prefix argument, all buffers are considered, otherwise
-only those not matched by iflipb-boring-buffer-filter."
+Buffers matching iflipb-really-boring-buffer-filter are always
+ignored. Without a prefix argument, buffers matching
+iflipb-boring-buffer-filter are also ignored."
   (interactive "P")
   (when (iflipb-first-iflipb-buffer-switch-command)
     (setq iflipb-current-buffer-index 0)
     (setq iflipb-saved-buffers nil)
-    (setq iflipb-include-all-buffers arg))
+    (setq iflipb-include-more-buffers arg))
   (let ((buffers (iflipb-interesting-buffers)))
     (if (or (null buffers)
             (= iflipb-current-buffer-index
