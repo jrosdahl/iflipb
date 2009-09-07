@@ -88,7 +88,8 @@
 ;;
 ;; iflipb by default ignores buffers starting with an asterix or space. See the
 ;; documentation of the variable iflipb-boring-buffer-filter for how to change
-;; this.
+;; this. You can also give a prefix argument to iflipb-next-buffer to flip
+;; between all buffers in the buffer list.
 ;;
 ;; iflipb was inspired by cycle-buffer.el
 ;; <http://kellyfelkins.org/pub/cycle-buffer.el>. cycle-buffer.el has some more
@@ -115,6 +116,8 @@ an argument. A return value of nil from the function means
 include and non-nil means exclude.")
 (defvar iflipb-current-buffer-index 0
   "Index of the currently displayed buffer in the buffer list.")
+(defvar iflipb-include-all-buffers nil
+  "Whether all buffers should be included while flipping.")
 (defvar iflipb-saved-buffers nil
   "Saved buffer list state; the original order of buffers to the left
 of iflipb-current-buffer-index.")
@@ -146,7 +149,9 @@ displayed buffer list."
 (defun iflipb-interesting-buffers ()
   "Returns buffers that should be included in the displayed
 buffer list."
-  (iflipb-filter (buffer-list) 'iflipb-interesting-buffer-p))
+  (if iflipb-include-all-buffers
+      (buffer-list)
+    (iflipb-filter (buffer-list) 'iflipb-interesting-buffer-p)))
 
 (defun iflipb-first-iflipb-buffer-switch-command ()
   "Determines whether this is the first invocation of
@@ -188,13 +193,16 @@ minibuffer."
     (message (iflipb-format-buffers current-buffer buffers))
     (switch-to-buffer current-buffer)))
 
-(defun iflipb-next-buffer ()
+(defun iflipb-next-buffer (arg)
   "Flip to the next buffer in the buffer list. Consecutive
-invocations switch to less recent buffers in the buffer list."
-  (interactive)
+invocations switch to less recent buffers in the buffer list.
+With a prefix argument, all buffers are considered, otherwise
+only those not matched by iflipb-boring-buffer-filter."
+  (interactive "P")
   (when (iflipb-first-iflipb-buffer-switch-command)
     (setq iflipb-current-buffer-index 0)
-    (setq iflipb-saved-buffers nil))
+    (setq iflipb-saved-buffers nil)
+    (setq iflipb-include-all-buffers arg))
   (let ((buffers (iflipb-interesting-buffers)))
     (if (or (null buffers)
             (= iflipb-current-buffer-index
