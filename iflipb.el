@@ -173,7 +173,7 @@ of iflipb-current-buffer-index.")
          (iflipb-any (mapcar (lambda (f) (iflipb-match-filter string f))
                              filter)))
         ((stringp filter) (string-match filter string))
-        (t (error (format "could not parse filter %s" filter)))))
+        (t (error "Bad iflipb ignore filter element: %s" filter))))
 
 (defun iflipb-buffers-not-matching-filter (filter)
   "Returns a list of buffer names not matching a filter."
