@@ -247,8 +247,9 @@ are also ignored."
       (setq iflipb-include-more-buffers nil)))
   (let ((buffers (iflipb-interesting-buffers)))
     (if (or (null buffers)
-            (= iflipb-current-buffer-index
-               (1- (length buffers))))
+            (and (memq (window-buffer) buffers)
+                 (= iflipb-current-buffer-index
+                    (1- (length buffers)))))
         (message "No more buffers.")
       (iflipb-select-buffer (1+ iflipb-current-buffer-index)))
     (setq last-command 'iflipb-next-buffer)))
