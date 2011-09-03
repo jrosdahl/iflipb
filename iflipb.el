@@ -68,7 +68,7 @@
 ;; [Edit buffer C]:                 C A B D E
 ;; Forward flip:      C [A] B D E   A C B D E
 ;;
-;; iflipb by default ignores buffers whose names start with an asterix or
+;; iflipb by default ignores buffers whose names start with an asterisk or
 ;; space. You can give a prefix argument to iflipb-next-buffer to make it flip
 ;; between more buffers. See the documentation of the variables
 ;; iflipb-ignore-buffers and iflipb-always-ignore-buffers for how to change
