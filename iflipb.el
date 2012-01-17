@@ -1,6 +1,6 @@
 ;;; iflipb -- interactively flip between recently visited buffers
 ;;
-;; Copyright (C) 2007-2009 Joel Rosdahl
+;; Copyright (C) 2007-2009, 2012 Joel Rosdahl
 ;;
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
@@ -220,6 +220,10 @@ minibuffer."
     " ")
    (1- (window-width (minibuffer-window)))))
 
+(defun iflipb-message (text)
+  (let (message-log-max)
+    (message text)))
+
 (defun iflipb-select-buffer (index)
   "Helper function that shows the buffer with a given index."
   (iflipb-restore-buffers)
@@ -228,7 +232,7 @@ minibuffer."
          (current-buffer (nth index buffers)))
     (setq iflipb-current-buffer-index index)
     (setq iflipb-saved-buffers (iflipb-first-n index buffers))
-    (message (iflipb-format-buffers current-buffer buffers))
+    (iflipb-message (iflipb-format-buffers current-buffer buffers))
     (switch-to-buffer current-buffer)))
 
 (defun iflipb-next-buffer (arg)
@@ -250,7 +254,7 @@ are also ignored."
             (and (memq (window-buffer) buffers)
                  (= iflipb-current-buffer-index
                     (1- (length buffers)))))
-        (message "No more buffers.")
+        (iflipb-message "No more buffers.")
       (iflipb-select-buffer (1+ iflipb-current-buffer-index)))
     (setq last-command 'iflipb-next-buffer)))
 
@@ -262,7 +266,7 @@ invocations switch to more recent buffers in the buffer list."
     (setq iflipb-current-buffer-index 0)
     (setq iflipb-saved-buffers nil))
   (if (= iflipb-current-buffer-index 0)
-      (message "You are already looking at the top buffer.")
+      (iflipb-message "You are already looking at the top buffer.")
     (iflipb-select-buffer (1- iflipb-current-buffer-index)))
   (setq last-command 'iflipb-previous-buffer))
 
