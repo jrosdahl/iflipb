@@ -1,6 +1,6 @@
 ;;; iflipb -- interactively flip between recently visited buffers
 ;;
-;; Copyright (C) 2007-2009 Joel Rosdahl
+;; Copyright (C) 2007-2009, 2012 Joel Rosdahl
 ;;
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
@@ -19,9 +19,10 @@
 ;; iflipb lets you flip between recently visited buffers in a way that
 ;; resembles what Alt-(Shift-)TAB does in Microsoft Windows and other graphical
 ;; window managers. iflipb treats the buffer list as a stack, and (by design)
-;; it doesn't loop around. This means that when you have flipped to the last
+;; it doesn't wrap around. This means that when you have flipped to the last
 ;; buffer and continue, you don't get to the first buffer again. This is a good
-;; thing.
+;; thing. (If you disagree and want wrap-around, set iflipb-wrap-around to
+;; non-nil.)
 ;;
 ;;
 ;; OPERATION
@@ -138,6 +139,9 @@ will get a buffer name as an argument (a return value of nil from
 the function means include and non-nil means exclude). If the
 value is a list, the filter matches if any of the elements in the
 value match.")
+(defvar iflipb-wrap-around nil
+  "*This variable determines whether buffer cycling should wrap
+around when an edge is reached in the buffer list.")
 (defvar iflipb-current-buffer-index 0
   "Index of the currently displayed buffer in the buffer list.")
 (defvar iflipb-include-more-buffers nil
@@ -250,7 +254,9 @@ are also ignored."
             (and (memq (window-buffer) buffers)
                  (= iflipb-current-buffer-index
                     (1- (length buffers)))))
-        (message "No more buffers.")
+        (if iflipb-wrap-around
+            (iflipb-select-buffer 0)
+          (message "No more buffers."))
       (iflipb-select-buffer (1+ iflipb-current-buffer-index)))
     (setq last-command 'iflipb-next-buffer)))
 
@@ -262,7 +268,9 @@ invocations switch to more recent buffers in the buffer list."
     (setq iflipb-current-buffer-index 0)
     (setq iflipb-saved-buffers nil))
   (if (= iflipb-current-buffer-index 0)
-      (message "You are already looking at the top buffer.")
+      (if iflipb-wrap-around
+          (iflipb-select-buffer (1- (length (iflipb-interesting-buffers))))
+        (message "You are already looking at the top buffer."))
     (iflipb-select-buffer (1- iflipb-current-buffer-index)))
   (setq last-command 'iflipb-previous-buffer))
 
