@@ -224,6 +224,10 @@ minibuffer."
     " ")
    (1- (window-width (minibuffer-window)))))
 
+(defun iflipb-message (text)
+  (let (message-log-max)
+    (message text)))
+
 (defun iflipb-select-buffer (index)
   "Helper function that shows the buffer with a given index."
   (iflipb-restore-buffers)
@@ -232,7 +236,7 @@ minibuffer."
          (current-buffer (nth index buffers)))
     (setq iflipb-current-buffer-index index)
     (setq iflipb-saved-buffers (iflipb-first-n index buffers))
-    (message (iflipb-format-buffers current-buffer buffers))
+    (iflipb-message (iflipb-format-buffers current-buffer buffers))
     (switch-to-buffer current-buffer)))
 
 (defun iflipb-next-buffer (arg)
@@ -256,7 +260,7 @@ are also ignored."
                     (1- (length buffers)))))
         (if iflipb-wrap-around
             (iflipb-select-buffer 0)
-          (message "No more buffers."))
+          (iflib-message "No more buffers."))
       (iflipb-select-buffer (1+ iflipb-current-buffer-index)))
     (setq last-command 'iflipb-next-buffer)))
 
@@ -270,7 +274,7 @@ invocations switch to more recent buffers in the buffer list."
   (if (= iflipb-current-buffer-index 0)
       (if iflipb-wrap-around
           (iflipb-select-buffer (1- (length (iflipb-interesting-buffers))))
-        (message "You are already looking at the top buffer."))
+        (iflipb-message "You are already looking at the top buffer."))
     (iflipb-select-buffer (1- iflipb-current-buffer-index)))
   (setq last-command 'iflipb-previous-buffer))
 
