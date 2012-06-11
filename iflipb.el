@@ -239,6 +239,7 @@ minibuffer."
     (iflipb-message (iflipb-format-buffers current-buffer buffers))
     (switch-to-buffer current-buffer)))
 
+;;;###autoload
 (defun iflipb-next-buffer (arg)
   "Flip to the next buffer in the buffer list. Consecutive
 invocations switch to less recent buffers in the buffer list.
@@ -264,6 +265,7 @@ are also ignored."
       (iflipb-select-buffer (1+ iflipb-current-buffer-index)))
     (setq last-command 'iflipb-next-buffer)))
 
+;;;###autoload
 (defun iflipb-previous-buffer ()
   "Flip to the previous buffer in the buffer list. Consecutive
 invocations switch to more recent buffers in the buffer list."
