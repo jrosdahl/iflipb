@@ -261,7 +261,7 @@ are also ignored."
                     (1- (length buffers)))))
         (if iflipb-wrap-around
             (iflipb-select-buffer 0)
-          (iflib-message "No more buffer."))
+          (iflipb-message "No more buffers."))
       (iflipb-select-buffer (1+ iflipb-current-buffer-index)))
     (setq last-command 'iflipb-next-buffer)))
 
