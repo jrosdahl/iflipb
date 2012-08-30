@@ -1,6 +1,10 @@
-;;; iflipb -- interactively flip between recently visited buffers
+;;; iflipb.el --- interactively flip between recently visited buffers
 ;;
 ;; Copyright (C) 2007-2009, 2012 Joel Rosdahl
+;;
+;; Author: Joel Rosdahl <joel@rosdahl.net>
+;; Version: 1.0
+;; URL: http://hg.rosdahl.net/iflipb
 ;;
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
@@ -15,6 +19,8 @@
 ;;    without specific prior written permission.
 ;;
 ;; ============================================================================
+;;
+;;; Commentary:
 ;;
 ;; iflipb lets you flip between recently visited buffers in a way that
 ;; resembles what Alt-(Shift-)TAB does in Microsoft Windows and other graphical
@@ -119,6 +125,8 @@
 ;;
 ;; /Joel Rosdahl <joel@rosdahl.net>
 ;;
+
+;;; Code:
 
 (defvar iflipb-ignore-buffers "^[*]"
   "*This variable determines which buffers to ignore when a
