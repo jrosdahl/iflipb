@@ -128,8 +128,12 @@
 
 ;;; Code:
 
-(defvar iflipb-ignore-buffers "^[*]"
-  "*This variable determines which buffers to ignore when a
+(defgroup :iflipb nil
+  "Interactively flip between recently visited buffers."
+  :group 'convenience)
+
+(defcustom iflipb-ignore-buffers "^[*]"
+  "This variable determines which buffers to ignore when a
 prefix argument has not been given to iflipb-next-buffer. The
 value may be either a regexp string, a function or a list. If the
 value is a regexp string, it describes buffer names to exclude
@@ -137,23 +141,31 @@ from the buffer list. If the value is a function, the function
 will get a buffer name as an argument (a return value of nil from
 the function means include and non-nil means exclude). If the
 value is a list, the filter matches if any of the elements in the
-value match.")
-(defvar iflipb-always-ignore-buffers "^ "
-  "*This variable determines which buffers to always ignore. The
+value match."
+  :group 'iflipb)
+
+(defcustom iflipb-always-ignore-buffers "^ "
+  "This variable determines which buffers to always ignore. The
 value may be either a regexp string, a function or a list. If the
 value is a regexp string, it describes buffer names to exclude
 from the buffer list. If the value is a function, the function
 will get a buffer name as an argument (a return value of nil from
 the function means include and non-nil means exclude). If the
 value is a list, the filter matches if any of the elements in the
-value match.")
-(defvar iflipb-wrap-around nil
-  "*This variable determines whether buffer cycling should wrap
-around when an edge is reached in the buffer list.")
+value match."
+  :group 'iflipb)
+
+(defcustom iflipb-wrap-around nil
+  "This variable determines whether buffer cycling should wrap
+around when an edge is reached in the buffer list."
+  :group 'iflipb)
+
 (defvar iflipb-current-buffer-index 0
   "Index of the currently displayed buffer in the buffer list.")
+
 (defvar iflipb-include-more-buffers nil
   "Whether all buffers should be included while flipping.")
+
 (defvar iflipb-saved-buffers nil
   "Saved buffer list state; the original order of buffers to the left
 of iflipb-current-buffer-index.")
