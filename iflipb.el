@@ -160,6 +160,12 @@ value match."
 around when an edge is reached in the buffer list."
   :group 'iflipb)
 
+(defcustom iflipb-permissive-flip-back nil
+  "This variable determines whether iflipb-previous-buffer should
+use the previous buffer list when it's the first iflipb-*-buffer
+command in a row."
+  :group 'iflipb)
+
 (defvar iflipb-current-buffer-index 0
   "Index of the currently displayed buffer in the buffer list.")
 
@@ -290,7 +296,8 @@ are also ignored."
   "Flip to the previous buffer in the buffer list. Consecutive
 invocations switch to more recent buffers in the buffer list."
   (interactive)
-  (when (iflipb-first-iflipb-buffer-switch-command)
+  (when (and (not iflipb-permissive-flip-back)
+             (iflipb-first-iflipb-buffer-switch-command))
     (setq iflipb-current-buffer-index 0)
     (setq iflipb-saved-buffers nil))
   (if (= iflipb-current-buffer-index 0)
