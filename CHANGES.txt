@@ -1,0 +1,10 @@
+1.1
+===
+
+* Added customization of public iflipb variables (patch by Dmitry Gutov).
+* Added iflipb-permissive-flip-back setting (patch by Dmitry Gutov).
+
+1.0
+===
+
+* First tagged version.
