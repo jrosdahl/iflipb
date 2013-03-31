@@ -1,6 +1,6 @@
 ;;; iflipb.el --- interactively flip between recently visited buffers
 ;;
-;; Copyright (C) 2007-2009, 2012 Joel Rosdahl
+;; Copyright (C) 2007-2009, 2012-2013 Joel Rosdahl
 ;;
 ;; Author: Joel Rosdahl <joel@rosdahl.net>
 ;; Version: 1.1
@@ -308,3 +308,5 @@ invocations switch to more recent buffers in the buffer list."
   (setq last-command 'iflipb-previous-buffer))
 
 (provide 'iflipb)
+
+;;; iflipb.el ends here
