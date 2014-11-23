@@ -3,7 +3,7 @@
 ;; Copyright (C) 2007-2014 Joel Rosdahl
 ;;
 ;; Author: Joel Rosdahl <joel@rosdahl.net>
-;; Version: 1.2
+;; Version: 1.3
 ;; URL: http://git.rosdahl.net/?p=joel/iflipb.git
 ;;
 ;; Redistribution and use in source and binary forms, with or without
