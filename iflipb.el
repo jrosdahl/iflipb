@@ -4,7 +4,7 @@
 ;;
 ;; Author: Joel Rosdahl <joel@rosdahl.net>
 ;; Version: 1.2
-;; URL: http://hg.rosdahl.net/iflipb
+;; URL: http://git.rosdahl.net/?p=joel/iflipb.git
 ;;
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
