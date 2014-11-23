@@ -1,3 +1,9 @@
+Unreleased
+==========
+
+* Fixed problem when buffer name contains "%".
+
+
 1.2
 ===
 

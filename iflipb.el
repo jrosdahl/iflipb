@@ -1,6 +1,6 @@
 ;;; iflipb.el --- interactively flip between recently visited buffers
 ;;
-;; Copyright (C) 2007-2009, 2012-2013 Joel Rosdahl
+;; Copyright (C) 2007-2014 Joel Rosdahl
 ;;
 ;; Author: Joel Rosdahl <joel@rosdahl.net>
 ;; Version: 1.2
@@ -252,7 +252,7 @@ minibuffer."
 
 (defun iflipb-message (text)
   (let (message-log-max)
-    (message text)))
+    (message "%s" text)))
 
 (defun iflipb-select-buffer (index)
   "Helper function that shows the buffer with a given index."
