@@ -1,6 +1,6 @@
 ;;; iflipb.el --- interactively flip between recently visited buffers
 ;;
-;; Copyright (C) 2007-2014 Joel Rosdahl
+;; Copyright (C) 2007-2017 Joel Rosdahl
 ;;
 ;; Author: Joel Rosdahl <joel@rosdahl.net>
 ;; Version: 1.3
@@ -162,7 +162,9 @@ around when an edge is reached in the buffer list."
 (defcustom iflipb-permissive-flip-back nil
   "This variable determines whether iflipb-previous-buffer should
 use the previous buffer list when it's the first iflipb-*-buffer
-command in a row."
+command in a row. In other words: Running iflipb-previous-buffer
+after editing a buffer will act as if the current buffer was not
+visited; it will stay in its original place in the buffer list."
   :group 'iflipb)
 
 (defvar iflipb-current-buffer-index 0
