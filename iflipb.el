@@ -91,11 +91,10 @@
 ;;
 ;; in your .emacs file or equivalent.
 ;;
-;; This file does not install any key bindings for the two commands. I
-;; personally use M-h and M-H (i.e., M-S-h) since I don't use the standard
-;; binding of M-h (mark-paragraph) and M-h is quick and easy to press. To
-;; install iflipb with M-h and M-H as keyboard bindings, put something like
-;; this in your .emacs:
+;; iflipb does not install any key bindings for the two commands. I personally
+;; use M-h and M-H (i.e., M-S-h) since I don't use the standard binding of M-h
+;; (mark-paragraph) and M-h is quick and easy to press. To install iflipb with
+;; M-h and M-H as keyboard bindings, put something like this in your .emacs:
 ;;
 ;;   (global-set-key (kbd "M-h") 'iflipb-next-buffer)
 ;;   (global-set-key (kbd "M-H") 'iflipb-previous-buffer)
