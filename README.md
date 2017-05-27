@@ -90,6 +90,45 @@ Or perhaps use functions keys like `F9` and `F10`:
     (global-set-key (kbd "<f9>")  'iflipb-previous-buffer)
 
 
+Configuration
+-------------
+
+There are four variables that affect iflipb's behavior:
+
+* `iflipb-ignore-buffers` (default: `"^[*]"`)
+
+  This variable determines which buffers to ignore when a prefix argument has
+  not been given to `iflipb-next-buffer`. The value may be either a regexp
+  string, a function or a list. If the value is a regexp string, it describes
+  buffer names to exclude from the buffer list. If the value is a function, the
+  function will get a buffer name as an argument (a return value of `nil` from
+  the function means include and non-nil means exclude). If the value is a
+  list, the filter matches if any of the elements in the value match.
+
+* `iflipb-always-ignore-buffers` (default: `"^ "`)
+
+  This variable determines which buffers to always ignore. The value may be
+  either a regexp string, a function or a list. If the value is a regexp
+  string, it describes buffer names to exclude from the buffer list. If the
+  value is a function, the function will get a buffer name as an argument (a
+  return value of `nil` from the function means include and non-nil means
+  exclude). If the value is a list, the filter matches if any of the elements
+  in the value match.
+
+* `iflipb-wrap-around` (default: `nil`)
+
+  This variable determines whether buffer cycling should wrap around when an
+  edge is reached in the buffer list.
+
+* `iflipb-permissive-flip-back` (default: `nil`)
+
+  This variable determines whether `iflipb-previous-buffer` should use the
+  previous buffer list when it's the first `iflipb-*-buffer` command in a row.
+  In other words: Running `iflipb-previous-buffer` after editing a buffer will
+  act as if the current buffer was not visited; it will stay in its original
+  place in the buffer list.
+
+
 About
 -----
 
