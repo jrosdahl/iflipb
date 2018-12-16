@@ -1,6 +1,8 @@
 iflipb
 ======
 
+[![MELPA](https://melpa.org/packages/iflipb-badge.svg)](https://melpa.org/#/iflipb)
+
 iflipb lets you flip between recently visited buffers in a way that resembles
 what _Alt-(Shift-)TAB_ does in Microsoft Windows and other graphical window
 managers. iflipb treats the buffer list as a stack, and (by design) it doesn't
