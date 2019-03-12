@@ -185,7 +185,7 @@ visited; it will stay in its original place in the buffer list."
   :group 'iflipb)
 
 (defface iflipb-current-buffer-face
-  '((t (:foreground "white")))
+  '((t (:inherit minibuffer-prompt)))
   "Face used for the current buffer name."
   :group 'iflipb)
 
