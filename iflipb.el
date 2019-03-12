@@ -179,7 +179,7 @@ after editing a buffer will act as if the current buffer was not
 visited; it will stay in its original place in the buffer list."
   :group 'iflipb)
 
-(defface iflipb-buffer-face
+(defface iflipb-other-buffer-face
   '((t (:foreground "default")))
   "Face used for a non-current buffer name."
   :group 'iflipb)
@@ -189,7 +189,7 @@ visited; it will stay in its original place in the buffer list."
   "Face used for the current buffer name."
   :group 'iflipb)
 
-(defcustom iflipb-buffer-template
+(defcustom iflipb-other-buffer-template
   "%s"
   "The template string that will be applied to a non-current buffer name. Use string `%s` to refer to the buffer name."
   :group 'iflipb)
@@ -273,8 +273,8 @@ minibuffer."
           (setq name (format iflipb-current-buffer-template name))
           (add-text-properties 0 (length name) '(face 'iflipb-current-buffer-face) name))
       (progn
-        (setq name (format iflipb-buffer-template name))
-        (add-text-properties 0 (length name) '(face 'iflipb-buffer-face) name)))
+        (setq name (format iflipb-other-buffer-template name))
+        (add-text-properties 0 (length name) '(face 'iflipb-other-buffer-face) name)))
     name))
 
 (defun iflipb-format-buffers (current-buffer buffers)
