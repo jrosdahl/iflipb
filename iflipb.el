@@ -267,15 +267,12 @@ iflipb-next-buffer or iflipb-previous-buffer this round."
 (defun iflipb-format-buffer (current-buffer buffer)
   "Format a buffer name for inclusion in the buffer list in the
 minibuffer."
-  (let ((name (buffer-name buffer)))
-    (if (eq current-buffer buffer)
-        (progn
-          (setq name (format iflipb-current-buffer-template name))
-          (add-text-properties 0 (length name) '(face 'iflipb-current-buffer-face) name))
-      (progn
-        (setq name (format iflipb-other-buffer-template name))
-        (add-text-properties 0 (length name) '(face 'iflipb-other-buffer-face) name)))
-    name))
+  (let* ((type (if (eq current-buffer buffer) "current" "other"))
+         (face (intern (format "iflipb-%s-buffer-face" type)))
+         (template (intern (format "iflipb-%s-buffer-template" type)))
+         (name (buffer-name buffer)))
+    (add-text-properties 0 (length name) `(face ,face) name)
+    (format (symbol-value template) name)))
 
 (defun iflipb-format-buffers (current-buffer buffers)
   "Format buffer names for displaying them in the minibuffer."
