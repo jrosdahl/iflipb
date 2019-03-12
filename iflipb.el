@@ -191,12 +191,14 @@ visited; it will stay in its original place in the buffer list."
 
 (defcustom iflipb-other-buffer-template
   "%s"
-  "The template string that will be applied to a non-current buffer name. Use string `%s` to refer to the buffer name."
+  "The template string that will be applied to a non-current
+buffer name. Use string `%s' to refer to the buffer name."
   :group 'iflipb)
 
 (defcustom iflipb-current-buffer-template
   "[%s]"
-  "The template string that will be applied to the current buffer name. Use string `%s` to refer to the buffer name."
+  "The template string that will be applied to the current buffer
+name. Use string `%s' to refer to the buffer name."
   :group 'iflipb)
 
 (defvar iflipb-current-buffer-index 0
