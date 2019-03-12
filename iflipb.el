@@ -180,7 +180,7 @@ visited; it will stay in its original place in the buffer list."
   :group 'iflipb)
 
 (defface iflipb-other-buffer-face
-  '((t (:foreground "default")))
+  '((t (:inherit default)))
   "Face used for a non-current buffer name."
   :group 'iflipb)
 
