@@ -179,6 +179,28 @@ after editing a buffer will act as if the current buffer was not
 visited; it will stay in its original place in the buffer list."
   :group 'iflipb)
 
+(defface iflipb-other-buffer-face
+  '((t (:inherit default)))
+  "Face used for a non-current buffer name."
+  :group 'iflipb)
+
+(defface iflipb-current-buffer-face
+  '((t (:inherit minibuffer-prompt)))
+  "Face used for the current buffer name."
+  :group 'iflipb)
+
+(defcustom iflipb-other-buffer-template
+  "%s"
+  "The template string that will be applied to a non-current
+buffer name. Use string `%s' to refer to the buffer name."
+  :group 'iflipb)
+
+(defcustom iflipb-current-buffer-template
+  "[%s]"
+  "The template string that will be applied to the current buffer
+name. Use string `%s' to refer to the buffer name."
+  :group 'iflipb)
+
 (defvar iflipb-current-buffer-index 0
   "Index of the currently displayed buffer in the buffer list.")
 
@@ -247,11 +269,12 @@ iflipb-next-buffer or iflipb-previous-buffer this round."
 (defun iflipb-format-buffer (current-buffer buffer)
   "Format a buffer name for inclusion in the buffer list in the
 minibuffer."
-  (let ((name (buffer-name buffer)))
-    (when (eq current-buffer buffer)
-      (setq name (format "[%s]" name))
-      (add-text-properties 1 (1- (length name)) '(face bold) name))
-    name))
+  (let* ((type (if (eq current-buffer buffer) "current" "other"))
+         (face (intern (format "iflipb-%s-buffer-face" type)))
+         (template (intern (format "iflipb-%s-buffer-template" type)))
+         (name (buffer-name buffer)))
+    (add-text-properties 0 (length name) `(face ,face) name)
+    (format (symbol-value template) name)))
 
 (defun iflipb-format-buffers (current-buffer buffers)
   "Format buffer names for displaying them in the minibuffer."
