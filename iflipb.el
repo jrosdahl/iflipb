@@ -240,11 +240,23 @@ of iflipb-current-buffer-index.")
         ((stringp filter) (string-match filter string))
         (t (error "Bad iflipb ignore filter element: %s" filter))))
 
+(defun iflipb-ido-buffer-list ()
+  "ido buffer list for iflipb"
+  (require 'ido)
+  (let* ((ido-process-ignore-lists t)
+         ido-ignored-list
+         ido-ignore-buffers
+         ido-use-virtual-buffers
+         (bufs (mapcar 'get-buffer (ido-make-buffer-list nil))))
+    (remove nil
+            (mapcar (lambda (b) (if (memq b bufs) b))
+                    (buffer-list (selected-frame))))))
+
 (defun iflipb-buffers-not-matching-filter (filter)
   "Returns a list of buffer names not matching a filter."
   (iflipb-filter
    (lambda (b) (not (iflipb-match-filter (buffer-name b) filter)))
-   (buffer-list (selected-frame))))
+   (buffer-list (iflipb-ido-buffer-list))))
 
 (defun iflipb-interesting-buffers ()
   "Returns buffers that should be included in the displayed
