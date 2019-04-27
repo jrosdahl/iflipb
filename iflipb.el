@@ -201,6 +201,13 @@ buffer name. Use string `%s' to refer to the buffer name."
 name. Use string `%s' to refer to the buffer name."
   :group 'iflipb)
 
+(defcustom iflipb-buffer-list-function
+  'iflipb-buffer-list
+  "The function to be used to create the buffer list. Current options are
+  iflipb-buffer-list and iflipb-ido-buffer-list."
+  :type 'function
+  :group 'iflipb)
+
 (defvar iflipb-current-buffer-index 0
   "Index of the currently displayed buffer in the buffer list.")
 
@@ -240,11 +247,27 @@ of iflipb-current-buffer-index.")
         ((stringp filter) (string-match filter string))
         (t (error "Bad iflipb ignore filter element: %s" filter))))
 
+(defun iflipb-buffer-list ()
+  "Buffer list for iflipb"
+  (buffer-list (selected-frame)))
+
+(defun iflipb-ido-buffer-list ()
+  "Ido buffer list for iflipb"
+  (require 'ido)
+  (let* ((ido-process-ignore-lists t)
+         ido-ignored-list
+         ido-ignore-buffers
+         ido-use-virtual-buffers
+         (bufs (mapcar 'get-buffer (ido-make-buffer-list nil))))
+    (remove nil
+            (mapcar (lambda (b) (if (memq b bufs) b))
+                    (buffer-list (selected-frame))))))
+
 (defun iflipb-buffers-not-matching-filter (filter)
   "Returns a list of buffer names not matching a filter."
   (iflipb-filter
    (lambda (b) (not (iflipb-match-filter (buffer-name b) filter)))
-   (buffer-list (selected-frame))))
+   (funcall iflipb-buffer-list-function)))
 
 (defun iflipb-interesting-buffers ()
   "Returns buffers that should be included in the displayed
