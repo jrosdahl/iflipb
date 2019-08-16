@@ -1,4 +1,4 @@
-;;; iflipb.el --- interactively flip between recently visited buffers
+;;; iflipb.el --- Interactively flip between recently visited buffers
 ;;
 ;; Copyright (C) 2007-2017 Joel Rosdahl
 ;;
