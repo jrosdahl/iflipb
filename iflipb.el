@@ -1,6 +1,6 @@
 ;;; iflipb.el --- Interactively flip between recently visited buffers
 ;;
-;; Copyright (C) 2007-2017 Joel Rosdahl
+;; Copyright (C) 2007-2019 Joel Rosdahl
 ;;
 ;; Author: Joel Rosdahl <joel@rosdahl.net>
 ;; Version: 1.4
@@ -144,19 +144,23 @@
   :group 'convenience)
 
 (defcustom iflipb-ignore-buffers "^[*]"
-  "This variable determines which buffers to ignore when a
-prefix argument has not been given to iflipb-next-buffer. The
-value may be either a regexp string, a function or a list. If the
-value is a regexp string, it describes buffer names to exclude
-from the buffer list. If the value is a function, the function
-will get a buffer name as an argument (a return value of nil from
-the function means include and non-nil means exclude). If the
-value is a list, the filter matches if any of the elements in the
-value match."
+  "Which buffers to ignore by default.
+
+This variable determines which buffers to ignore when a prefix
+argument has not been given to `iflipb-next-buffer'. The value
+may be either a regexp string, a function or a list. If the value
+is a regexp string, it describes buffer names to exclude from the
+buffer list. If the value is a function, the function will get a
+buffer name as an argument (a return value of nil from the
+function means include and non-nil means exclude). If the value
+is a list, the filter matches if any of the elements in the value
+match."
   :group 'iflipb)
 
 (defcustom iflipb-always-ignore-buffers "^ "
-  "This variable determines which buffers to always ignore. The
+  "Which buffers to always ignore.
+
+This variable determines which buffers to always ignore. The
 value may be either a regexp string, a function or a list. If the
 value is a regexp string, it describes buffer names to exclude
 from the buffer list. If the value is a function, the function
@@ -167,16 +171,21 @@ value match."
   :group 'iflipb)
 
 (defcustom iflipb-wrap-around nil
-  "This variable determines whether buffer cycling should wrap
+  "Whether buffer cycling should wrap around edges.
+
+This variable determines whether buffer cycling should wrap
 around when an edge is reached in the buffer list."
   :group 'iflipb)
 
 (defcustom iflipb-permissive-flip-back nil
-  "This variable determines whether iflipb-previous-buffer should
-use the previous buffer list when it's the first iflipb-*-buffer
-command in a row. In other words: Running iflipb-previous-buffer
-after editing a buffer will act as if the current buffer was not
-visited; it will stay in its original place in the buffer list."
+  "Whether flipping backward should be allowed as the first command.
+
+This variable determines whether `iflipb-previous-buffer' should
+be able to go to the last buffer when it's the first
+iflipb-*-buffer command in a row. In other words: Running
+`iflipb-previous-buffer' after editing a buffer will act as if
+the current buffer was not visited; it will stay in its original
+place in the buffer list."
   :group 'iflipb)
 
 (defface iflipb-other-buffer-face
@@ -191,20 +200,26 @@ visited; it will stay in its original place in the buffer list."
 
 (defcustom iflipb-other-buffer-template
   "%s"
-  "The template string that will be applied to a non-current
+  "String template for displaying other buffers.
+
+This is the template string that will be applied to a non-current
 buffer name. Use string `%s' to refer to the buffer name."
   :group 'iflipb)
 
 (defcustom iflipb-current-buffer-template
   "[%s]"
-  "The template string that will be applied to the current buffer
-name. Use string `%s' to refer to the buffer name."
+  "String template for displaying the current buffer.
+
+This is the template string that will be applied to the current
+buffer name. Use string `%s' to refer to the buffer name."
   :group 'iflipb)
 
 (defcustom iflipb-buffer-list-function
   'iflipb-buffer-list
-  "The function to be used to create the buffer list. Current options are
-  iflipb-buffer-list and iflipb-ido-buffer-list."
+  "The function to be used to create the buffer list.
+
+Current options are `iflipb-buffer-list' and
+`iflipb-ido-buffer-list'."
   :type 'function
   :group 'iflipb)
 
@@ -215,15 +230,17 @@ name. Use string `%s' to refer to the buffer name."
   "Whether all buffers should be included while flipping.")
 
 (defvar iflipb-saved-buffers nil
-  "Saved buffer list state; the original order of buffers to the left
-of iflipb-current-buffer-index.")
+  "Saved buffer list state.
+
+This is the original order of buffers to the left of
+`iflipb-current-buffer-index'.")
 
 (defun iflipb-first-n (n list)
-  "Returns the first n elements of a list."
+  "Return the first N elements of LIST."
   (butlast list (- (length list) n)))
 
 (defun iflipb-filter (pred elements)
-  "Returns elements that satisfy a predicate."
+  "Return elements from ELEMENTS that satisfy predicate PRED."
   (let ((result nil))
     (while elements
       (let ((elem (car elements))
@@ -234,11 +251,11 @@ of iflipb-current-buffer-index.")
     (nreverse result)))
 
 (defun iflipb-any (elements)
-  "Returns non-nil if and only if any element in the list is non-nil."
+  "Return non-nil if and only if any element in ELEMENTS is non-nil."
   (iflipb-filter (lambda (x) (not (null x))) elements))
 
 (defun iflipb-match-filter (string filter)
-  "Returns non-nil if string matches filter, otherwise nil."
+  "Return non-nil if STRING matches FILTER, otherwise nil."
   (cond ((null filter) nil)
         ((functionp filter) (funcall filter string))
         ((listp filter)
@@ -248,11 +265,11 @@ of iflipb-current-buffer-index.")
         (t (error "Bad iflipb ignore filter element: %s" filter))))
 
 (defun iflipb-buffer-list ()
-  "Buffer list for iflipb"
+  "Buffer list for iflipb."
   (buffer-list (selected-frame)))
 
 (defun iflipb-ido-buffer-list ()
-  "Ido buffer list for iflipb"
+  "Ido buffer list for iflipb."
   (require 'ido)
   (let* ((ido-process-ignore-lists t)
          ido-ignored-list
@@ -264,14 +281,13 @@ of iflipb-current-buffer-index.")
                     (buffer-list (selected-frame))))))
 
 (defun iflipb-buffers-not-matching-filter (filter)
-  "Returns a list of buffer names not matching a filter."
+  "Return a list of buffer names not matching FILTER."
   (iflipb-filter
    (lambda (b) (not (iflipb-match-filter (buffer-name b) filter)))
    (funcall iflipb-buffer-list-function)))
 
 (defun iflipb-interesting-buffers ()
-  "Returns buffers that should be included in the displayed
-buffer list."
+  "Return buffers that will be in the displayed buffer list."
   (iflipb-buffers-not-matching-filter
    (append
     (list iflipb-always-ignore-buffers)
@@ -280,8 +296,7 @@ buffer list."
       (list iflipb-ignore-buffers)))))
 
 (defun iflipb-first-iflipb-buffer-switch-command ()
-  "Determines whether this is the first invocation of
-iflipb-next-buffer or iflipb-previous-buffer this round."
+  "Determine if this is the first iflipb invocation this round."
   (not (or (eq last-command 'iflipb-next-buffer)
            (eq last-command 'iflipb-previous-buffer))))
 
@@ -290,8 +305,7 @@ iflipb-next-buffer or iflipb-previous-buffer this round."
   (mapc 'switch-to-buffer (reverse iflipb-saved-buffers)))
 
 (defun iflipb-format-buffer (current-buffer buffer)
-  "Format a buffer name for inclusion in the buffer list in the
-minibuffer."
+  "Format a buffer name for inclusion in the minibuffer buffer list."
   (let* ((type (if (eq current-buffer buffer) "current" "other"))
          (face (intern (format "iflipb-%s-buffer-face" type)))
          (template (intern (format "iflipb-%s-buffer-template" type)))
@@ -326,11 +340,12 @@ minibuffer."
 
 ;;;###autoload
 (defun iflipb-next-buffer (arg)
-  "Flip to the next buffer in the buffer list. Consecutive
-invocations switch to less recent buffers in the buffer list.
-Buffers matching iflipb-always-ignore-buffers are always ignored.
-Without a prefix argument, buffers matching iflipb-ignore-buffers
-are also ignored."
+  "Flip to the next buffer in the buffer list.
+
+Consecutive invocations switch to less recent buffers in the
+buffer list. Buffers matching `iflipb-always-ignore-buffers' are
+always ignored. Without a prefix argument, buffers matching
+`iflipb-ignore-buffers' are also ignored."
   (interactive "P")
   (when (iflipb-first-iflipb-buffer-switch-command)
     (setq iflipb-current-buffer-index 0)
@@ -352,8 +367,10 @@ are also ignored."
 
 ;;;###autoload
 (defun iflipb-previous-buffer ()
-  "Flip to the previous buffer in the buffer list. Consecutive
-invocations switch to more recent buffers in the buffer list."
+  "Flip to the previous buffer in the buffer list.
+
+Consecutive invocations switch to more recent buffers in the
+buffer list."
   (interactive)
   (when (and (not iflipb-permissive-flip-back)
              (iflipb-first-iflipb-buffer-switch-command))
