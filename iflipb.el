@@ -46,7 +46,8 @@
 ;; OPERATION
 ;; =========
 ;;
-;; iflipb provides two commands: iflipb-next-buffer and iflipb-previous-buffer.
+;; iflipb provides twree commands: iflipb-next-buffer, iflipb-previous-buffer
+;; and iflipb-kill-buffer.
 ;;
 ;; iflipb-next-buffer behaves like Alt-TAB: it switches to the previously used
 ;; buffer, just like "C-x b RET" (or C-M-l in XEmacs). However, another
@@ -93,6 +94,10 @@
 ;; iflipb-ignore-buffers and iflipb-always-ignore-buffers for how to change
 ;; this.
 ;;
+;; iflipb-kill-buffer is designed to be bound to "C-x k". It behaves like
+;; kill-buffer but keeps iflipb's buffer list state so that it's possible to
+;; kill a buffer and then advance to the next buffer without starting all over
+;; again.
 ;;
 ;; INSTALLATION
 ;; ============
@@ -297,8 +302,7 @@ This is the original order of buffers to the left of
 
 (defun iflipb-first-iflipb-buffer-switch-command ()
   "Determine if this is the first iflipb invocation this round."
-  (not (or (eq last-command 'iflipb-next-buffer)
-           (eq last-command 'iflipb-previous-buffer))))
+  (not (string-match "^iflipb-" (symbol-name last-command))))
 
 (defun iflipb-restore-buffers ()
   "Helper function that restores the buffer list to the original state."
@@ -382,6 +386,19 @@ buffer list."
         (iflipb-message "You are already looking at the top buffer."))
     (iflipb-select-buffer (1- iflipb-current-buffer-index)))
   (setq last-command 'iflipb-previous-buffer))
+
+;;;###autoload
+(defun iflipb-kill-buffer ()
+  "Same as `kill-buffer' but keep the iflipb buffer list state."
+  (interactive)
+  ;; (apply 'kill-buffer args)
+  (call-interactively #'kill-buffer)
+  (if (iflipb-first-iflipb-buffer-switch-command)
+      (setq last-command 'kill-buffer)
+    (if (< iflipb-current-buffer-index (length (iflipb-interesting-buffers)))
+        (iflipb-select-buffer iflipb-current-buffer-index)
+      (iflipb-select-buffer (1- iflipb-current-buffer-index)))
+    (setq last-command 'iflipb-kill-buffer)))
 
 (provide 'iflipb)
 

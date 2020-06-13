@@ -14,8 +14,8 @@ you disagree and want wrap-around, set `iflipb-wrap-around` to non-nil.)
 Operation
 ---------
 
-iflipb provides two commands: `iflipb-next-buffer` and
-`iflipb-previous-buffer`.
+iflipb provides three commands: `iflipb-next-buffer`, `iflipb-previous-buffer`
+and `iflipb-kill-buffer`.
 
 `iflipb-next-buffer` behaves like Alt-TAB: it switches to the previously used
 buffer, just like _C-x b RET_ (or _C-M-l_ in XEmacs). However, another
@@ -60,6 +60,11 @@ iflipb by default ignores buffers whose names start with an asterisk or space.
 You can give a prefix argument to `iflipb-next-buffer` to make it flip between
 more buffers. See the documentation of the variables `iflipb-ignore-buffers`
 and `iflipb-always-ignore-buffers` for how to change this.
+
+`iflipb-kill-buffer` is designed to be bound to `C-x k`. It behaves like
+`kill-buffer` but keeps iflipb's buffer list state so that it's possible to
+kill a buffer and then advance to the next buffer without starting all over
+again.
 
 
 Installation
