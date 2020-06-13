@@ -1,6 +1,6 @@
 ;;; iflipb.el --- Interactively flip between recently visited buffers
 ;;
-;; Copyright (C) 2007-2019 Joel Rosdahl
+;; Copyright (C) 2007-2020 Joel Rosdahl
 ;;
 ;; Author: Joel Rosdahl <joel@rosdahl.net>
 ;; Version: 1.4
@@ -116,7 +116,7 @@
 ;;   (global-set-key (kbd "<C-tab>") 'iflipb-next-buffer)
 ;;   (global-set-key
 ;;    (if (featurep 'xemacs) (kbd "<C-iso-left-tab>") (kbd "<C-S-iso-lefttab>"))
-;;     'iflipb-previous-buffer)
+;;    'iflipb-previous-buffer)
 ;;
 ;; Or perhaps use functions keys like F9 and F10:
 ;;
