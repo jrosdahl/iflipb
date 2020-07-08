@@ -240,6 +240,30 @@ Current options are `iflipb-buffer-list' and
 This is the original order of buffers to the left of
 `iflipb-current-buffer-index'.")
 
+(defcustom iflipb-format-buffers-function
+  #'iflipb-format-buffers-horizontally
+  "The function to be used to format buffers.
+
+The function will get the current buffer and a buffer list as
+arguments. A return value is a string to be displayed."
+  :type '(choice
+          (function-item
+           :tag "Horizontally" iflipb-format-buffers-horizontally)
+          (function-item
+           :tag "Vertically" iflipb-format-buffers-vertically)
+          (function :tag "Other function"))
+  :group 'iflipb)
+
+(defcustom iflipb-format-buffers-height 5
+  "Minibuffer height for displaying buffers.
+
+This variable determines the height of displaying buffers by
+`iflipb-format-buffers-vertically'. If this value is larger than
+the height indicated by `max-mini-window-height', the height of
+`max-mini-window-height' is used."
+  :type 'integer
+  :group 'iflipb)
+
 (defun iflipb-first-n (n list)
   "Return the first N elements of LIST."
   (butlast list (- (length list) n)))
@@ -319,6 +343,10 @@ This is the original order of buffers to the left of
 
 (defun iflipb-format-buffers (current-buffer buffers)
   "Format buffer names for displaying them in the minibuffer."
+  (funcall iflipb-format-buffers-function current-buffer buffers))
+
+(defun iflipb-format-buffers-horizontally (current-buffer buffers)
+  "Format buffer names for displaying them horizontally."
   (truncate-string-to-width
    (mapconcat
     (lambda (buffer)
@@ -326,6 +354,34 @@ This is the original order of buffers to the left of
     buffers
     " ")
    (1- (window-width (minibuffer-window)))))
+
+(defun iflipb-format-buffers-vertically (current-buffer buffers)
+  "Format buffer names for displaying them vertically."
+  (let ((height
+         (min iflipb-format-buffers-height
+              (cond ((integerp max-mini-window-height)
+                     max-mini-window-height)
+                    ((floatp max-mini-window-height)
+                     (floor (* (frame-height)
+                               max-mini-window-height)))
+                    (t (error "Invalid value of `max-mini-window-height': %s"
+                              max-mini-window-height)))))
+        (rest buffers)
+        (n 0)
+        nrest buffs)
+    (while (and rest (or (null nrest) (> nrest 0)))
+      (let ((b (car rest)))
+        (setq buffs (cons b buffs)
+              rest (cdr rest)
+              n (1+ n))
+        (cond ((eq current-buffer b)
+               (setq nrest (- height (min n (ceiling height 2)))))
+              ((numberp nrest)
+               (setq nrest (1- nrest))))))
+    (mapconcat
+     (lambda (b) (iflipb-format-buffer current-buffer b))
+     (nreverse (iflipb-first-n height buffs))
+     "\n")))
 
 (defun iflipb-message (text)
   (let (message-log-max)
