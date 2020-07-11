@@ -228,18 +228,6 @@ Current options are `iflipb-buffer-list' and
   :type 'function
   :group 'iflipb)
 
-(defvar iflipb-current-buffer-index 0
-  "Index of the currently displayed buffer in the buffer list.")
-
-(defvar iflipb-include-more-buffers nil
-  "Whether all buffers should be included while flipping.")
-
-(defvar iflipb-saved-buffers nil
-  "Saved buffer list state.
-
-This is the original order of buffers to the left of
-`iflipb-current-buffer-index'.")
-
 (defcustom iflipb-format-buffers-function
   #'iflipb-format-buffers-horizontally
   "The function to be used to format buffers.
@@ -266,6 +254,18 @@ the height indicated by `max-mini-window-height', the height of
 `max-mini-window-height' is used."
   :type 'integer
   :group 'iflipb)
+
+(defvar iflipb-current-buffer-index 0
+  "Index of the currently displayed buffer in the buffer list.")
+
+(defvar iflipb-include-more-buffers nil
+  "Whether all buffers should be included while flipping.")
+
+(defvar iflipb-saved-buffers nil
+  "Saved buffer list state.
+
+This is the original order of buffers to the left of
+`iflipb-current-buffer-index'.")
 
 (defun iflipb-first-n (n list)
   "Return the first N elements of LIST."
