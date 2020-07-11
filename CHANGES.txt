@@ -1,3 +1,11 @@
+1.5
+===
+
+* Added customize options for UI elements.
+* Added possibility to use ido to create the buffer list.
+* Added possibility to display a vertical list of buffers.
+
+
 1.4
 ===
 
