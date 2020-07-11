@@ -208,7 +208,7 @@ place in the buffer list."
   "String template for displaying other buffers.
 
 This is the template string that will be applied to a non-current
-buffer name. Use string `%s' to refer to the buffer name."
+buffer name. Use `%s' to refer to the buffer name."
   :group 'iflipb)
 
 (defcustom iflipb-current-buffer-template
@@ -216,7 +216,7 @@ buffer name. Use string `%s' to refer to the buffer name."
   "String template for displaying the current buffer.
 
 This is the template string that will be applied to the current
-buffer name. Use string `%s' to refer to the buffer name."
+buffer name. Use `%s' to refer to the buffer name."
   :group 'iflipb)
 
 (defcustom iflipb-buffer-list-function
@@ -245,7 +245,10 @@ This is the original order of buffers to the left of
   "The function to be used to format buffers.
 
 The function will get the current buffer and a buffer list as
-arguments. A return value is a string to be displayed."
+arguments. A return value is a string to be displayed. Predefined
+functions are `iflipb-format-buffers-horizontally' for a
+horizontal list and `iflipb-format-buffers-vertically' for a
+vertical list. See also `iflipb-format-buffers-height'."
   :type '(choice
           (function-item
            :tag "Horizontally" iflipb-format-buffers-horizontally)
