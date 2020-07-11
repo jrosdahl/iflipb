@@ -135,6 +135,39 @@ There are four variables that affect iflipb's behavior:
   act as if the current buffer was not visited; it will stay in its original
   place in the buffer list.
 
+* `iflipb-other-buffer-template` (default `"%s"`)
+
+  String template for displaying other buffers. This is the template string
+  that will be applied to a non-current buffer name. Use `"%s"` to refer to the
+  buffer name.
+
+* `iflipb-current-buffer-template` (default `"[%s]"`)
+
+  String template for displaying the current buffer. This is the template
+  string that will be applied to the current buffer name. Use `"%s"` to refer
+  to the buffer name.
+
+* `iflipb-buffer-list-function` (default `iflipb-buffer-list`)
+
+  The function to be used to create the buffer list. Current options are
+  `iflipb-buffer-list` and `iflipb-ido-buffer-list`.
+
+* `iflipb-format-buffers-function` (default
+  `#'iflipb-format-buffers-horizontally`)
+
+  The function to be used to format buffers. The function will get the current
+  buffer and a buffer list as arguments. A return value is a string to be
+  displayed. Predefined functions are `iflipb-format-buffers-horizontally` for
+  a horizontal list and `iflipb-format-buffers-vertically` for a vertical list.
+  See also `iflipb-format-buffers-height`.
+
+* `iflipb-format-buffers-height` (default `5`)
+
+  Minibuffer height for displaying buffers. This variable determines the height
+  of displaying buffers by `iflipb-format-buffers-vertically`. If this value is
+  larger than the height indicated by `max-mini-window-height`, the height of
+  `max-mini-window-height` is used.
+
 
 About
 -----
