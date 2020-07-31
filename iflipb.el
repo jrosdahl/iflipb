@@ -329,7 +329,8 @@ This is the original order of buffers to the left of
 
 (defun iflipb-first-iflipb-buffer-switch-command ()
   "Determine if this is the first iflipb invocation this round."
-  (not (string-match "^iflipb-" (symbol-name last-command))))
+  (and (symbolp last-command) ; Could be a lambda
+       (not (string-match "^iflipb-" (symbol-name last-command)))))
 
 (defun iflipb-restore-buffers ()
   "Helper function that restores the buffer list to the original state."
