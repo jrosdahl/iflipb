@@ -246,12 +246,11 @@ vertical list. See also `iflipb-format-buffers-height'."
   :group 'iflipb)
 
 (defcustom iflipb-format-buffers-height 5
-  "Minibuffer height for displaying buffers.
+  "Minibuffer height for displaying buffers when using
+`iflipb-format-buffers-vertically`.
 
-This variable determines the height of displaying buffers by
-`iflipb-format-buffers-vertically'. If this value is larger than
-the height indicated by `max-mini-window-height', the height of
-`max-mini-window-height' is used."
+The actual height will not exceed the height indicated by
+`max-mini-window-height`."
   :type 'integer
   :group 'iflipb)
 

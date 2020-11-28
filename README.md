@@ -100,7 +100,7 @@ Or perhaps use functions keys like `F9` and `F10`:
 Configuration
 -------------
 
-There are four variables that affect iflipb's behavior:
+These variables affect iflipb's behavior:
 
 * `iflipb-ignore-buffers` (default: `"^[*]"`)
 
@@ -147,10 +147,10 @@ There are four variables that affect iflipb's behavior:
   string that will be applied to the current buffer name. Use `"%s"` to refer
   to the buffer name.
 
-* `iflipb-buffer-list-function` (default `iflipb-buffer-list`)
+* `iflipb-buffer-list-function` (default `'iflipb-buffer-list`)
 
   The function to be used to create the buffer list. Current options are
-  `iflipb-buffer-list` and `iflipb-ido-buffer-list`.
+  `'iflipb-buffer-list` and `'iflipb-ido-buffer-list`.
 
 * `iflipb-format-buffers-function` (default
   `#'iflipb-format-buffers-horizontally`)
@@ -163,10 +163,9 @@ There are four variables that affect iflipb's behavior:
 
 * `iflipb-format-buffers-height` (default `5`)
 
-  Minibuffer height for displaying buffers. This variable determines the height
-  of displaying buffers by `iflipb-format-buffers-vertically`. If this value is
-  larger than the height indicated by `max-mini-window-height`, the height of
-  `max-mini-window-height` is used.
+  Minibuffer height for displaying buffers when using
+  `iflipb-format-buffers-vertically`. The actual height will not exceed the
+  height indicated by `max-mini-window-height`.
 
 
 About
