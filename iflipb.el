@@ -163,7 +163,7 @@ match."
   :type '(choice
           (regexp :tag "Regexp that describes buffer names to exclude")
           (function :tag "Function that takes a buffer name")
-          (list (string :tag "List of buffers to exclude")))
+          (list (string :tag "Buffer to exclude")))
   :group 'iflipb)
 
 (defcustom iflipb-always-ignore-buffers "^ "
@@ -180,7 +180,7 @@ value match."
   :type '(choice
           (regexp :tag "Regexp that describes buffer names to exclude")
           (function :tag "Function that takes a buffer name")
-          (list (string :tag "List of buffers to exclude")))
+          (list (string :tag "Buffer to always exclude")))
   :group 'iflipb)
 
 (defcustom iflipb-wrap-around nil
