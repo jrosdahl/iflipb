@@ -318,6 +318,7 @@ This is the original order of buffers to the left of
 (defun iflipb-ido-buffer-list ()
   "Ido buffer list for iflipb."
   (require 'ido)
+  (declare-function ido-make-buffer-list "ido")
   (let* ((ido-process-ignore-lists t)
          ido-ignored-list
          ido-ignore-buffers
