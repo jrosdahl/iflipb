@@ -3,7 +3,7 @@
 ;; Copyright (C) 2007-2022 Joel Rosdahl
 ;;
 ;; Author: Joel Rosdahl <joel@rosdahl.net>
-;; Version: 1.5
+;; Version: 1.6
 ;; License: BSD-3-clause
 ;; URL: https://github.com/jrosdahl/iflipb
 ;;

@@ -1,3 +1,13 @@
+1.6
+===
+
+* Check that last-command is a symbol.
+* Improved doc strings.
+* Added customization types for defcustom forms that were missing them.
+* Fixed byte compiler warning about unknown ido-make-buffer-list function.
+* Don't leak iflipb face markup of buffer names.
+
+
 1.5
 ===
 
