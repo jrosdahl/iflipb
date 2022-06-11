@@ -1,6 +1,6 @@
 ;;; iflipb.el --- Interactively flip between recently visited buffers
 ;;
-;; Copyright (C) 2007-2020 Joel Rosdahl
+;; Copyright (C) 2007-2022 Joel Rosdahl
 ;;
 ;; Author: Joel Rosdahl <joel@rosdahl.net>
 ;; Version: 1.5
@@ -357,7 +357,7 @@ This is the original order of buffers to the left of
   (let* ((type (if (eq current-buffer buffer) "current" "other"))
          (face (intern (format "iflipb-%s-buffer-face" type)))
          (template (intern (format "iflipb-%s-buffer-template" type)))
-         (name (buffer-name buffer)))
+         (name (concat (buffer-name buffer)))) ; concat to copy the string
     (add-text-properties 0 (length name) `(face ,face) name)
     (format (symbol-value template) name)))
 
